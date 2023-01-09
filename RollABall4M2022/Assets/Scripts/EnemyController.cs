@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour
     
     private SphereCollider _distanceToCheck;
     
-    private Animator _enemyFSM;
+    public Animator _enemyFSM;
 
     private NavMeshAgent _navMeshAgent;
 
@@ -71,7 +71,17 @@ public class EnemyController : MonoBehaviour
 
     public void CheckPatrolPointDistance()
     {
-        _enemyFSM.SetFloat("Distance", Vector3.Distance(transform.position, _currentPatrolPoint.position));
+        _enemyFSM.SetFloat("Distance", Vector3.Distance(transform.position, myPatrolRoute.patrolPoints[_currentPatrolIndex].position));
+    }
+
+    public void UpdatePatrolPoint()
+    {
+        _currentPatrolIndex++;
+        if (_currentPatrolIndex >= myPatrolRoute.patrolPoints.Count)
+        {
+            _currentPatrolIndex = 0;
+        }
+        _currentPatrolPoint = myPatrolRoute.patrolPoints[_currentPatrolIndex];
     }
 
     public void SetDistance(float distanceToSet)
@@ -102,4 +112,6 @@ public class EnemyController : MonoBehaviour
     {
         _navMeshAgent.SetDestination(_playerTransform.position);
     }
+    // Atualiza o ponto de patrulha atual para o próximo ponto da lista
+    
 }
